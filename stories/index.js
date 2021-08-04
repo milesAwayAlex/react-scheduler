@@ -19,6 +19,7 @@ import Show from 'components/Appointment/Show';
 import Confirm from 'components/Appointment/Confirm';
 import Status from 'components/Appointment/Status';
 import ErrMess from 'components/Appointment/Error';
+import Form from 'components/Appointment/Form';
 
 storiesOf('Button', module)
   .addParameters({
@@ -110,7 +111,7 @@ storiesOf('InterviewerListItem', module)
       id={interviewer.id}
       name={interviewer.name}
       avatar={interviewer.avatar}
-      setValue={() => action('setValue')(interviewer.id)}
+      setItem={() => action('setValue')(interviewer.id)}
     />
   ));
 
@@ -166,4 +167,29 @@ storiesOf('Appointment', module)
   .add('Status', () => <Status message="Deleting" />)
   .add('Error', () => (
     <ErrMess onClose={action('onClose')} message="Error while deleting" />
+  ))
+  .add('Form', () => (
+    <Form
+      name="Student Name"
+      interviewers={interviewers}
+      interviewer={3}
+      onSave={action('onSave')}
+      onCancel={action('onCancel')}
+    />
+  ))
+  .add('Form Edit', () => (
+    <Form
+      name={'Elizabeth Moss'}
+      interviewers={interviewers}
+      interviewer={4}
+      onSave={action('onSave')}
+      onCancel={action('onCancel')}
+    />
+  ))
+  .add('Form Create', () => (
+    <Form
+      interviewers={interviewers}
+      onSave={action('onSave')}
+      onCancel={action('onCancel')}
+    />
   ));
