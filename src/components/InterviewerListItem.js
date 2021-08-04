@@ -13,15 +13,8 @@ export default function InterviwerListItem(props) {
     'interviewers__item--selected-image': !!props.selected,
   });
   return (
-    <li className={cls}>
-      <img
-        className={imgCls}
-        src={props.avatar}
-        alt={props.name}
-        onClick={() => {
-          props.setInterviewer(props.name);
-        }}
-      />
+    <li className={cls} onClick={props.setItem}>
+      <img className={imgCls} src={props.avatar} alt={props.name} />
       {!!props.selected && props.name}
     </li>
   );
