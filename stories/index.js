@@ -38,7 +38,7 @@ storiesOf('DayListItem', module) //Initiates Storybook and registers our DayList
   .add('Clickable', () => (
     <DayListItem
       name="Tuesday"
-      setDay={() => action('setDay')('Tuesday')}
+      setValue={() => action('setValue')('Tuesday')}
       spots={5}
     /> // action() allows us to create a callback that appears in the actions panel when clicked
   ));
@@ -66,10 +66,14 @@ storiesOf('DayList', module)
     backgrounds: [{ name: 'dark', value: '#222f3e', default: true }],
   })
   .add('Monday', () => (
-    <DayList days={days} day={'Monday'} setDay={action('setDay')} />
+    <DayList days={days} value={'Monday'} setValue={action('setValue')} />
   ))
   .add('Tuesday', () => (
-    <DayList days={days} day={'Tuesday'} setDay={action('setDay')} />
+    <DayList
+      days={days}
+      value={'Tuesday'}
+      setValue={action('setValue')}
+    />
   ));
 
 const interviewer = {
@@ -102,7 +106,7 @@ storiesOf('InterviewerListItem', module)
       id={interviewer.id}
       name={interviewer.name}
       avatar={interviewer.avatar}
-      setInterviewer={() => action('setInterviewer')(interviewer.id)}
+      setValue={() => action('setValue')(interviewer.id)}
     />
   ));
 
@@ -121,13 +125,13 @@ storiesOf('InterviewerList', module)
   .add('Initial', () => (
     <InterviewerList
       interviewers={interviewers}
-      setInterviewer={action('setInterviewer')}
+      setValue={action('setValue')}
     />
   ))
   .add('Preselected', () => (
     <InterviewerList
       interviewers={interviewers}
-      interviewer={3}
-      setInterviewer={action('setInterviewer')}
+      value={3}
+      setValue={action('setValue')}
     />
   ));
