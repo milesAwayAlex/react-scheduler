@@ -12,6 +12,8 @@ import DayList from 'components/DayList';
 import InterviewerListItem from 'components/InterviewerListItem';
 import InterviewerList from 'components/InterviewerList';
 
+import Appointment from 'components/Appointment';
+
 storiesOf('Button', module)
   .addParameters({
     backgrounds: [{ name: 'dark', value: '#222f3e', default: true }],
@@ -69,11 +71,7 @@ storiesOf('DayList', module)
     <DayList days={days} value={'Monday'} setValue={action('setValue')} />
   ))
   .add('Tuesday', () => (
-    <DayList
-      days={days}
-      value={'Tuesday'}
-      setValue={action('setValue')}
-    />
+    <DayList days={days} value={'Tuesday'} setValue={action('setValue')} />
   ));
 
 const interviewer = {
@@ -135,3 +133,10 @@ storiesOf('InterviewerList', module)
       setValue={action('setValue')}
     />
   ));
+
+storiesOf('Appointment', module)
+  .addParameters({
+    backgrounds: [{ name: 'dark', value: '#222f3e', default: true }],
+  })
+  .add('Appointment', () => <Appointment />)
+  .add('With Time', () => <Appointment time="12pm" />);
