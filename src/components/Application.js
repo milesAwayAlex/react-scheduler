@@ -12,13 +12,21 @@ export default function Application(props) {
     days: [],
     appointments: {},
     iws: {},
+    interviewers: [],
   });
-  const { day, days } = state;
+  const { day, days, interviewers } = state;
   const setDay = (day) => setState({ ...state, day });
   const dailyAppointments = getAppointmentsForDay(state, day);
   const doAppointment = (appointment) => {
     const iv = getInterview(state, appointment.interview);
-    return <Appointment key={appointment.id} {...appointment} interview={iv} />;
+    return (
+      <Appointment
+        key={appointment.id}
+        {...appointment}
+        interview={iv}
+        interviewers={Object.values(interviewers)}
+      />
+    );
   };
 
   useEffect(() => {
@@ -32,7 +40,7 @@ export default function Application(props) {
           ...s,
           days: d.data,
           appointments: a.data,
-          iws: i.data,
+          interviewers: i.data,
         }));
       })
       .catch((e) => {
