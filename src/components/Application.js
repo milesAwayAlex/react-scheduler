@@ -37,6 +37,16 @@ export default function Application(props) {
           },
         }));
       });
+  const deleteAppointment = (id) =>
+    axios.delete(`/api/appointments/${id}`).then(() =>
+      setState((s) => ({
+        ...s,
+        appointments: {
+          ...s.appointments,
+          [id]: { ...s.appointments[id], interview: null },
+        },
+      }))
+    );
   const doAppointment = (appointment) => {
     const iv = getInterview(state, appointment.interview);
     return (
@@ -46,6 +56,7 @@ export default function Application(props) {
         interview={iv}
         interviewers={dailyInterviewers}
         bookInterview={bookInterview}
+        cancelInterview={deleteAppointment}
       />
     );
   };
