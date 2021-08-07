@@ -7,6 +7,7 @@ import useVisualMode from 'hooks/useVisualMode';
 import Form from './Form';
 import Status from './Status';
 import Confirm from './Confirm';
+import Error from './Error';
 
 export default function Appointment(props) {
   const EMPTY = 'EMPTY';
@@ -16,17 +17,23 @@ export default function Appointment(props) {
   const CONFIRM = 'CONFIRM';
   const DELETING = 'DELETING';
   const EDIT = 'EDIT';
+  const ERROR_SAVE = 'ERROR_SAVE';
+  const ERROR_DELETE = 'ERROR_DELETE';
   const i = props.interview;
   const { mode, transition, back } = useVisualMode(i ? SHOW : EMPTY);
   const save = (student, interviewer) => {
     transition(SAVING);
     props
       .bookInterview(props.id, { student, interviewer })
-      .then(() => transition(SHOW));
+      .then(() => transition(SHOW))
+      .catch(() => transition(ERROR_SAVE, true));
   };
   const onDelete = () => {
-    transition(DELETING);
-    props.cancelInterview(props.id).then(() => transition(EMPTY));
+    transition(DELETING, true);
+    props
+      .cancelInterview(props.id)
+      .then(() => transition(EMPTY))
+      .catch(() => transition(ERROR_DELETE, true));
   };
   return (
     <article className="appointment">
@@ -60,6 +67,12 @@ export default function Appointment(props) {
       {mode === DELETING && <Status message={DELETING} />}
       {mode === CONFIRM && (
         <Confirm onCancel={() => back()} onConfirm={onDelete} />
+      )}
+      {mode === ERROR_SAVE && (
+        <Error message={'Error while saving..'} onClose={() => back()} />
+      )}
+      {mode === ERROR_DELETE && (
+        <Error message={'Error while deleting'} onClose={() => back()} />
       )}
     </article>
   );
