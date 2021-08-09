@@ -6,6 +6,7 @@ import axios from 'axios';
 export default () => {
   const [state, dispatch] = useReducer(
     (st, act) => {
+      console.log(act);
       const day = st.days.find((d) => d.name === st.day);
       const re = {
         setDay: (day) => ({ ...st, day }),
@@ -99,6 +100,22 @@ export default () => {
       .catch((e) => {
         throw e;
       });
+  }, []);
+
+  useEffect(() => {
+    const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+    ws.onopen = () => console.log('ws opened');
+    ws.onclose = () => console.log('ws closed');
+    ws.onmessage = (e) => {
+      const { id, interview } = JSON.parse(e.data);
+      const type = interview !== null ? 'bookInterview' : 'deleteAppointment';
+      const args = interview === null ? [id] : [id, { ...interview }];
+      dispatch({
+        type,
+        args,
+      });
+    };
+    return () => ws.close();
   }, []);
   return { state, setDay, bookInterview, deleteAppointment };
 };
