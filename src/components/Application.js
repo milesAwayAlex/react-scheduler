@@ -1,57 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import 'components/Application.scss';
 import DayList from './DayList';
 import Appointment from './Appointment';
-import axios from 'axios';
 import {
   getAppointmentsForDay,
   getInterview,
   getInterviewersForDay,
 } from 'helpers/selectors';
+import useAppData from 'hooks/useAppData';
 
 export default function Application(props) {
-  const [state, setState] = useState({
-    day: 'Monday',
-    days: [],
-    appointments: {},
-    iws: {},
-    interviewers: [],
-  });
-  const { day, days, interviewers } = state;
-  const setDay = (day) => setState({ ...state, day });
+  const { state, setDay, bookInterview, deleteAppointment } = useAppData();
+  const { day, days } = state;
   const dailyAppointments = getAppointmentsForDay(state, day);
   const dailyInterviewers = getInterviewersForDay(state, day);
-  const doAppointment = (appointment) => {
-    const iv = getInterview(state, appointment.interview);
-    return (
-      <Appointment
-        key={appointment.id}
-        {...appointment}
-        interview={iv}
-        interviewers={dailyInterviewers}
-      />
-    );
-  };
-
-  useEffect(() => {
-    Promise.all([
-      axios.get('/api/days'),
-      axios.get('/api/appointments'),
-      axios.get('/api/interviewers'),
-    ])
-      .then(([d, a, i]) => {
-        setState((s) => ({
-          ...s,
-          days: d.data,
-          appointments: a.data,
-          interviewers: i.data,
-        }));
-      })
-      .catch((e) => {
-        throw e;
-      });
-  }, []);
+  const doAppointment = (appointment) => (
+    <Appointment
+      key={appointment.id}
+      {...appointment}
+      interview={getInterview(state, appointment.interview)}
+      interviewers={dailyInterviewers}
+      bookInterview={bookInterview}
+      cancelInterview={deleteAppointment}
+    />
+  );
   return (
     <main className="layout">
       <section className="sidebar">
