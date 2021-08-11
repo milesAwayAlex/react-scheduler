@@ -68,5 +68,8 @@ const get = jest.fn((url) => {
 const put = jest.fn(() =>
   Promise.resolve({ status: 204, statusText: 'No Content' })
 );
+const deleteApp = jest.fn(() =>
+  Promise.resolve({ status: 204, statusText: 'No Content' })
+);
 
-export default { get, put };
+export default { get, put, delete: deleteApp };
