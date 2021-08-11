@@ -65,4 +65,8 @@ const get = jest.fn((url) => {
   });
 });
 
-export default { get };
+const put = jest.fn(() =>
+  Promise.resolve({ status: 204, statusText: 'No Content' })
+);
+
+export default { get, put };
