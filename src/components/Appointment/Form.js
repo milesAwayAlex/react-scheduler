@@ -17,6 +17,7 @@ export default (props) => {
   };
   const validate = () => {
     if (name === '') return setError('Student name cannot be blank');
+    setError('');
     props.onSave(name, interviewer);
   };
 
