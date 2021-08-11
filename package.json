@@ -15,6 +15,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "cypress": "cypress open -P .",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public --ci",
     "build-storybook": "build-storybook -s public"
@@ -42,6 +43,7 @@
     "@testing-library/react": "^8.0.7",
     "@testing-library/react-hooks": "^7.0.1",
     "babel-loader": "^8.0.5",
+    "cypress": "^8.2.0",
     "node-sass": "^4.14.0",
     "prop-types": "^15.7.2"
   },
@@ -49,6 +51,10 @@
     "watchPathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/.git/"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/index.js"
     ]
   }
 }
