@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 export default (props) => {
   const [name, setName] = useState(props.name || '');
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
+  const [error, setError] = useState('');
 
   const reset = () => {
     setName('');
@@ -13,6 +14,11 @@ export default (props) => {
   const cancel = () => {
     reset();
     props.onCancel();
+  };
+  const validate = () => {
+    if (name === '') return setError('Student name cannot be blank');
+    setError('');
+    props.onSave(name, interviewer);
   };
 
   return (
@@ -25,8 +31,10 @@ export default (props) => {
             type="text"
             placeholder="Enter Student Name"
             value={name}
+            data-testid="student-name-input"
             onChange={(e) => setName(e.target.value)}
           />
+          <section className="appointment__validation">{error}</section>
         </form>
         <InterviewerList
           interviewers={props.interviewers}
@@ -39,7 +47,7 @@ export default (props) => {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={() => props.onSave(name, interviewer)}>
+          <Button confirm onClick={validate}>
             Save
           </Button>
         </section>
