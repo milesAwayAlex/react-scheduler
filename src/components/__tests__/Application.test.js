@@ -9,6 +9,7 @@ import {
   getAllByTestId,
   getByAltText,
   getByPlaceholderText,
+  queryByText,
 } from '@testing-library/react';
 
 import Application from 'components/Application';
@@ -35,5 +36,12 @@ describe('Application', () => {
     });
     fireEvent.click(getByAltText(appointment, 'Sylvia Palmer'));
     fireEvent.click(getByText(appointment, 'Save'));
+    expect(getByText(appointment, /saving/i)).toBeInTheDocument();
+    await waitForElement(() => getByText(appointment, 'Lydia Miller-Jones'));
+    const day = getAllByTestId(container, 'day').find((e) =>
+      queryByText(e, 'Monday')
+    );
+    // getBy... will throw for no matches
+    getByText(day, 'no spots remaining');
   });
 });
