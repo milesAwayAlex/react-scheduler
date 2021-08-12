@@ -1,19 +1,19 @@
-describe('Application', () => {
+describe('Appointments', () => {
   beforeEach(() => {
     cy.request('/api/debug/reset');
+    cy.visit('/');
+    cy.contains('Monday');
   });
   it('shoild be able to book an interview', () => {
-    cy.visit('/');
     cy.get('[alt=Add]')
       .filter((i) => i === 0)
       .click();
     cy.get('[data-testid=student-name-input]').type('Their Name');
     cy.get('[alt="Sylvia Palmer"]').click();
     cy.contains('Save').click();
-    cy.contains('article', 'Their Name');
+    cy.contains('article', 'Their Name').contains('Sylvia Palmer');
   });
   it('shoild be able to edit an interview', () => {
-    cy.visit('/');
     cy.get('[alt=Edit]')
       .filter((i) => i === 0)
       .invoke('show')
@@ -26,12 +26,13 @@ describe('Application', () => {
     cy.contains('article', 'Washington Irving').contains('Tori Malcolm');
   });
   it('shoild be able to delete an interview', () => {
-    cy.visit('/');
     cy.get('[alt=Delete]')
       .filter((i) => i === 0)
       .invoke('show')
       .click();
     cy.contains('Confirm').click();
+    cy.contains('DELETING',).should('exist');
+    cy.contains('DELETING').should('not.exist');
     cy.get('[alt=Add]').should('have.length', 3);
   });
   it('should navigate to Tuesday', () => {
